@@ -31,18 +31,26 @@ class TransactionList extends StatelessWidget {
                 )
               ],
             )
-          : SizedBox(
-              height: 400,
-              child: ListView.builder(
-                itemBuilder: (ctx, index) {
-                  return ListTile(
-                    title: CircleAvatar(
-                      child: Text("${_transactions[index].amount}"),
+          : ListView.builder(
+              itemBuilder: (ctx, index) {
+                return Card(
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      child: Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: FittedBox(
+                          child: Text("${_transactions[index].amount}"),
+                        ),
+                      ),
                     ),
-                  );
-                },
-                itemCount: _transactions.length,
-              ),
+                    title: Text(_transactions[index].title),
+                    subtitle: Text(
+                      DateFormat.yMMMd().format(_transactions[index].date),
+                    ),
+                  ),
+                );
+              },
+              itemCount: _transactions.length,
             ),
     );
   }
