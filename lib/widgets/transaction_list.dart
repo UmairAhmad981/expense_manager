@@ -34,6 +34,7 @@ class TransactionList extends StatelessWidget {
           : ListView.builder(
               itemBuilder: (ctx, index) {
                 return Card(
+                  elevation: 2,
                   child: ListTile(
                     leading: CircleAvatar(
                       child: Padding(
@@ -43,9 +44,15 @@ class TransactionList extends StatelessWidget {
                         ),
                       ),
                     ),
-                    title: Text(_transactions[index].title),
+                    title: Text(
+                      _transactions[index].title,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
                     subtitle: Text(
                       DateFormat.yMMMd().format(_transactions[index].date),
+                      style: const TextStyle(fontSize: 14,color: Colors.grey),
+
                     ),
                   ),
                 );
