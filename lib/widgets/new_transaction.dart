@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function btnPressed;
@@ -17,7 +18,7 @@ class _NewTransactionState extends State<NewTransaction> {
   void addTxn() {
     final enteredText = titleText.text;
 
-    if (enteredText.isEmpty || amt.text.isEmpty) {
+    if (enteredText.isEmpty || amt.text.isEmpty || _date == null) {
       return;
     }
 
@@ -26,8 +27,28 @@ class _NewTransactionState extends State<NewTransaction> {
     widget.btnPressed(
       enteredText,
       double.parse(enteredAmt),
+      _date,
     );
     Navigator.pop(context);
+  }
+
+  DateTime? _date ;
+
+  void pickDate() {
+    showDatePicker(
+      initialDate: DateTime.now(),
+      context: context,
+      firstDate: DateTime(
+          DateTime.now().year, (DateTime.now().month) - 6, DateTime.now().day),
+      lastDate: DateTime.now(),
+    ).then((datePick) {
+      if (datePick == null) {
+        return;
+      }
+      setState(() {
+        _date = datePick;
+      });
+    });
   }
 
   @override
@@ -38,7 +59,7 @@ class _NewTransactionState extends State<NewTransaction> {
         margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
         padding: const EdgeInsets.all(10),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             TextField(
               decoration: const InputDecoration(labelText: 'Title'),
@@ -51,8 +72,20 @@ class _NewTransactionState extends State<NewTransaction> {
               keyboardType: TextInputType.number,
               onSubmitted: (_) => addTxn(),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+            Row(
+              children: <Widget>[
+                Expanded(
+                    child: _date == null
+                        ? const Text("No Date Chosen!!!")
+                        : Text('Date : ${DateFormat('EEE, MMM d').format(_date!)}')),
+                TextButton(
+                  onPressed: pickDate,
+                  child: const Text("Choose Date"),
+                )
+              ],
+            ),
+            Container(
+              alignment: Alignment.bottomRight,
               child: OutlinedButton(
                 onPressed: () => addTxn(),
                 style: Theme.of(context).outlinedButtonTheme.style,

@@ -56,12 +56,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [];
 
-  void _addTransaction(String txTitle, double txAmt) {
+  void _addTransaction(String txTitle, double txAmt ,DateTime setDate) {
     final data = Transaction(
       id: DateTime.now().toString(),
       title: txTitle,
       amount: txAmt,
-      date: DateTime.now(),
+      date: setDate,
     );
     setState(() {
       _transactions.add(data);
@@ -84,7 +84,13 @@ class _MyHomePageState extends State<MyHomePage> {
           const Duration(days: 7),
         ),
       );
-    }).toList();
+    },).toList();
+  }
+
+  void _deleteItemsList(String id){
+    setState(() {
+    _transactions.removeWhere((idx) => idx.id==id);
+    });
   }
 
   @override
@@ -111,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ),
-          TransactionList(_transactions)
+          TransactionList(_transactions,_deleteItemsList)
         ],
       ),
       floatingActionButton: FloatingActionButton(
