@@ -23,7 +23,9 @@ class _NewTransactionState extends State<NewTransaction> {
     }
 
     final String enteredAmt = double.parse(amt.text).toStringAsFixed(2);
-
+    if(double.parse(enteredAmt)<=0){
+      return;
+    }
     widget.btnPressed(
       enteredText,
       double.parse(enteredAmt),
